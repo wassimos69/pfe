@@ -1,0 +1,43 @@
+# BitBake build artifacts
+build/tmp/
+build/cache/
+build/downloads/*.done
+
+# Shared state cache (can be regenerated)
+build/sstate-cache/
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build logs
+build.log
+build_*.log
+nohup.out
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Large deployment images (can be rebuilt)
+build/tmp/deploy/images/
+!build/tmp/deploy/images/.gitkeep
+
+# SSH keys
+*.pub
+id_rsa
+id_dsa
+
+# Configuration backups
+*.conf.bak
+local.conf.orig
