@@ -1,10 +1,10 @@
 # BitBake build artifacts
 build/tmp/
 build/cache/
-build/downloads/*.done
-
-# Shared state cache (can be regenerated)
+build/downloads/
 build/sstate-cache/
+build/build/
+build/*.log
 
 # Editor/IDE files
 .vscode/
@@ -41,3 +41,6 @@ id_dsa
 # Configuration backups
 *.conf.bak
 local.conf.orig
+layers/meta-openembedded/
+layers/meta-raspberrypi/
+layers/poky/

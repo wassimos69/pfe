@@ -1,0 +1,12 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          rpi-rootfs-autogrow
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Grow rootfs partition on first boot
+### END INIT INFO
+
+/usr/sbin/rpi-rootfs-autogrow.sh || true
+exit 0
