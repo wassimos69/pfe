@@ -41,6 +41,3 @@ id_dsa
 # Configuration backups
 *.conf.bak
 local.conf.orig
-layers/meta-openembedded/
-layers/meta-raspberrypi/
-layers/poky/
