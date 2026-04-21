@@ -1,0 +1,14 @@
+# requirements.txt
+# Python dependencies for Yocto BitBake build
+# Install with: pip3 install -r requirements.txt
+
+# Core BitBake requirements (included with poky)
+# These are listed for documentation and CI/CD environments
+
+Jinja2>=2.12
+Mako>=1.0.8
+pyasn1>=0.4.8
+pycryptodomex>=3.10.1
+psutil>=5.11.2
+pyyaml>=5.3
+typing-extensions>=3.7.4
