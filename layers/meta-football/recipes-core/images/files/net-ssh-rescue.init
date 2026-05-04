@@ -1,0 +1,86 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          net-ssh-rescue
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Bring up Ethernet and SSH in headless rescue mode
+### END INIT INFO
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+LOGFILE="/etc/net-ssh-rescue.log"
+
+bring_link_up() {
+    IFACE="$1"
+    if ip link show "$IFACE" >/dev/null 2>&1; then
+        ip link set "$IFACE" up || true
+        # Quick DHCP attempt; continue even if no lease is provided yet.
+        udhcpc -n -q -t 3 -i "$IFACE" >/dev/null 2>&1 || true
+    fi
+}
+
+has_ipv4() {
+    IFACE="$1"
+    ip -4 addr show dev "$IFACE" | grep -q "inet "
+}
+
+pick_eth_iface() {
+    for n in $(ls /sys/class/net 2>/dev/null); do
+        case "$n" in
+            lo|wl*|docker*|veth*|br*|virbr*)
+                continue
+                ;;
+            e*|en*|eth*|end*)
+                echo "$n"
+                return 0
+                ;;
+        esac
+    done
+    return 1
+}
+
+case "$1" in
+start)
+    {
+        echo "===== net-ssh-rescue start ====="
+        date
+        ip -o link show
+    } >> "$LOGFILE" 2>&1
+
+    mkdir -p /var/run/sshd /etc/ssh
+
+    # Ensure OpenSSH host keys exist before starting sshd.
+    /usr/libexec/openssh/sshd_check_keys >/dev/null 2>&1 || true
+
+    bring_link_up end0
+    bring_link_up eth0
+
+    ETH_IFACE="$(pick_eth_iface || true)"
+    if [ -n "$ETH_IFACE" ]; then
+        bring_link_up "$ETH_IFACE"
+    fi
+
+    # Fallback static IP on common Pi interface name if DHCP failed.
+    if ! has_ipv4 end0 && ! has_ipv4 eth0; then
+        if [ -n "$ETH_IFACE" ]; then
+            ip addr add 192.168.1.250/24 dev "$ETH_IFACE" >/dev/null 2>&1 || true
+        elif ip link show end0 >/dev/null 2>&1; then
+            ip addr add 192.168.1.250/24 dev end0 >/dev/null 2>&1 || true
+        elif ip link show eth0 >/dev/null 2>&1; then
+            ip addr add 192.168.1.250/24 dev eth0 >/dev/null 2>&1 || true
+        fi
+    fi
+
+    /usr/sbin/sshd >/dev/null 2>&1 || true
+
+    {
+        echo "ETH_IFACE=$ETH_IFACE"
+        ip -4 -o addr show
+        ip route
+        echo "===== net-ssh-rescue done ====="
+    } >> "$LOGFILE" 2>&1
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,28 @@
+# .gitattributes
+# Ensure consistent line endings across platforms
+
+# Auto detect text files and normalize line endings to LF
+* text=auto
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Configuration files
+*.conf text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+
+# BitBake recipes
+*.bb text eol=lf
+*.bbappend text eol=lf
+*.inc text eol=lf
+
+# Binary files
+*.gz binary
+*.wic binary
+*.rootfs binary

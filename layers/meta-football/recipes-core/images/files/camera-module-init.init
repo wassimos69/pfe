@@ -1,0 +1,12 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          camera-module-init
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Initialize RPi5 camera kernel modules
+### END INIT INFO
+
+/usr/sbin/camera-module-init.sh
+exit 0

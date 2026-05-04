@@ -1,0 +1,5 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux/files:"
+SRC_URI += "file://arm64-page-size-4k.cfg"
+SRC_URI += "file://boot-optimization.cfg"
+SRC_URI += "file://hailo-pci.cfg"

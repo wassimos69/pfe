@@ -1,0 +1,8 @@
+#!/bin/bash
+# === DIAGNOSTIC CAMÉRA - COPIER LIGNE PAR LIGNE OU EN ENTIER ===
+# À exécuter sur le Raspberry Pi 5 via picocom
+
+# MÉTHODE 1: Copier la ligne entière et coller dans picocom
+(echo "=== SETUP ===" && modprobe imx477 2>&1 && modprobe bcm2835_unicam 2>&1 && modprobe rp1_cfe 2>&1 && echo "" && echo "=== MODULES CHARGÉS ===" && lsmod | grep -E "imx477|unicam|cfe|v4l2|video" && echo "" && echo "=== /dev/video* ===" && ls -la /dev/video* 2>&1 && echo "" && echo "=== DMESG ERRORS ===" && dmesg | grep -iE "imx|csi|camera|error|fail" | tail -30 && echo "" && echo "=== CONFIG.TXT ===" && cat /boot/config.txt | grep -E "dtoverlay|camera" && echo "" && echo "=== LIBCAMERA TEST ===" && libcamera-hello --list-cameras 2>&1)
+
+# Copiez tout le texte de "echo ===" à "2>&1)" et collez dans picocom
